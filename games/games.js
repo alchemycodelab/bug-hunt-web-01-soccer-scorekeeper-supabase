@@ -4,18 +4,17 @@ import {
     getGames,
     createGame,
 } from '../fetch-utils.js';
-import { renderGame } from '../render-utils.js';
+import { displayGame } from '../render-utils.js';
 // import functions and grab DOM elements
 const currentGameEl = document.getElementById('current-game-container');
-const pastGamesEl = document.getElementById('past-games-container');
 const logoutButton = document.getElementById('logout');
 
 const nameForm = document.getElementById('name-form');
-const teamOneAddButton = document.getElementById('team-one-add-button');
+const teamOneAddButton = document.getElementById('teamoneadd-button');
 const teamTwoAddButton = document.getElementById('team-two-add-button');
 const teamOneSubtractButton = document.getElementById('team-one-subtract-button');
 const teamTwoSubtractButton = document.getElementById('team-two-subtract-button');
-const finishGameButton = document.getElementById('finish-game-button');
+const finishGameButton = document.getElementById('finishgamebutton');
 const teamOneLabel = document.getElementById('team-one-name');
 const teamTwoLabel = document.getElementById('team-two-name');
 
@@ -35,13 +34,11 @@ let currentGame = {
   // use user input to update state 
   // update DOM to reflect the new state
 
-nameForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-
+nameForm.addEventListener = ('submit', (e) => {
     const formData = new FormData(nameForm);
   
-    const name1 = formData.get('team-one');
-    const name2 = formData.get('team-two');
+    const name1 = formData.get('team-1');
+    const name2 = formData.get('team-2');
 
     currentGame.name1 = name1;
     currentGame.name2 = name2;
@@ -80,7 +77,7 @@ function displayCurrentGameEl() {
     teamOneLabel.textContent = currentGame.name1;
     teamTwoLabel.textContent = currentGame.name2;
 
-    const gameEl = renderGame(currentGame);
+    const gameEl = displayGame(currentGame);
     
     gameEl.classList.add('current');
 
@@ -89,10 +86,8 @@ function displayCurrentGameEl() {
 
 
 function displayAllGames() {
-    pastGamesEl.textContent = '';
-
     for (let game of pastGames) {
-        const gameEl = renderGame(game);
+        const gameEl = displayGame(game);
 
         gameEl.classList.add('past');
         
@@ -105,18 +100,13 @@ finishGameButton.addEventListener('click', async() => {
     
     await createGame(currentGame);
     
-    const games = await getGames();
+    const games = getGames();
 
     pastGames = games;
     
     displayAllGames();
     
-    currentGame = {
-        name1: '',
-        name2: '',
-        score1: 0,
-        score2: 0
-    };
+    currentGame = {};
 
     displayCurrentGameEl();
 });
@@ -128,8 +118,8 @@ logoutButton.addEventListener('click', () => {
     logout();
 });
 
-window.addEventListener('load', async() => {
-    const games = await getGames();
+window.addEventListener('load', () => {
+    const games = getGames();
 
     if (games) {
         pastGames = games;

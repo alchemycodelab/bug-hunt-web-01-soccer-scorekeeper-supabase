@@ -3,7 +3,7 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsI
 
 const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-export async function createGame(game){
+export function createGame(game){
     const response = await client
         .from('games')
         .insert({ 
@@ -18,7 +18,6 @@ export async function createGame(game){
 
 export async function getGames() {
     const response = await client
-        .from('games')
         .select()
         .match({ user_id: client.auth.user().id, });
 
