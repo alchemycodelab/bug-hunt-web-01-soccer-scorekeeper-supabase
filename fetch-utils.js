@@ -6,10 +6,7 @@ const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 export function createGame(game){
     const response = await client
         .from('games')
-        .insert({ 
-            ...game, 
-            user_id: client.auth.user().id, 
-        })
+        .insert([game])
         .single();
 
     return checkError(response);
@@ -19,7 +16,6 @@ export function createGame(game){
 export async function getGames() {
     const response = await client
         .select()
-        .match({ user_id: client.auth.user().id, });
 
     return checkError(response);    
 }
